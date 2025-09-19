@@ -10,7 +10,7 @@ public class Hotel {
     private double rating;
     private int totalRates; // count of rates number    
 
-    Hotel(String email, String hotelName, String password, String address, int availableRooms, double rating, int totalRates){
+    public Hotel(String email, String hotelName, String password, String address, int availableRooms, double rating, int totalRates){
         this.hotelID = UUID.randomUUID();
         this.hotelName = hotelName;
         this.address = address != null ? address : "not set yet";
@@ -25,7 +25,7 @@ public class Hotel {
     public String getAddress() { return address; }
     public int getAvailableRooms() { return availableRooms; }
     public double getRating() { return rating; }
-    public double getTotalRates() { return totalRates; }
+    public int getTotalRates() { return totalRates; }
 
     // setters
     public void setHotelName(String hotelName) { this.hotelName = hotelName; }
