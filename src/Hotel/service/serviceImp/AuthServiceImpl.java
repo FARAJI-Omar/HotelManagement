@@ -31,7 +31,14 @@ public class AuthServiceImpl implements AuthService {
     public Optional<User> login(String email, String password){
         Optional<User> user = userRepo.findByEmail(email);
         if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return user;
+            User.Role userRole = user.get().getRole();
+            if (ConsoleUI.isClient && userRole == User.Role.CLIENT) {
+                return user;
+            } else if (ConsoleUI.isHotelier && userRole == User.Role.ADMIN) {
+                return user;
+            } else {
+                return Optional.empty();
+            }
         }
         return Optional.empty();
     }
