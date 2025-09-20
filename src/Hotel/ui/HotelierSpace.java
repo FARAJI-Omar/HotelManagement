@@ -51,7 +51,7 @@ public class HotelierSpace {
                     }
                 }
                 case 3 -> {
-                    System.out.println("delete hotel!");
+                    DeleteHotelUI.deleteHotelUi();
                 }
                 case 4 -> {
                     HotelsListUI.displayHotels("List of your managed Hotels");

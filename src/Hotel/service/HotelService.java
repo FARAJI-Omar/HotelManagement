@@ -21,7 +21,7 @@ public interface HotelService {
 //    void updateAvailability(String hotelName, int availableRooms);
 //
 //    // DELETE
-//    void delete(String hotelName);
+    void delete(UUID ownerId, String hotelName);
 //
 //    // RATING
 //    void rate(String hotelName, double newRating);

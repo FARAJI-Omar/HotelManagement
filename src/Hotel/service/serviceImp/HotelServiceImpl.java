@@ -26,7 +26,6 @@ public class HotelServiceImpl implements HotelService {
             System.out.println("Hotel " + hotelName + " already exists.");
         }
     }
-
     //update hotel
     @Override
     public void update(UUID ownerId, String originalHotelName, String hotelName, String hotelAddress, int totalRooms) {
@@ -37,13 +36,19 @@ public class HotelServiceImpl implements HotelService {
             System.out.println("Hotel updated successfully!");
         }
     }
-
-
-
-
     //list all hotels
     @Override
     public List<Hotel> findAllHotels(UUID ownerId) {
         return hotelRepo.findAll(ownerId);
+    }
+    //delete hotel
+    @Override
+    public void delete(UUID ownerId, String hotelName) {
+        if (hotelNotExists(ownerId, hotelName, hotelRepo)) {
+            System.out.println("Hotel: " + hotelName + " does not exist.");
+        } else {
+            hotelRepo.delete(hotelName);
+            System.out.println("Hotel " + hotelName + " deleted successfully!");
+        }
     }
 }
