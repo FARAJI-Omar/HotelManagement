@@ -2,18 +2,26 @@ package Hotel.ui;
 
 import Hotel.service.AuthService;
 import Hotel.service.serviceImp.AuthServiceImpl;
+import Hotel.service.HotelService;
+import Hotel.service.serviceImp.HotelServiceImpl;
+import Hotel.repository.repoImp.InMemoryHotelRepository;
 import Hotel.repository.repoImp.InMemoryUserRepository;
 import Hotel.entity.User;
 import Hotel.utils.*;
 
+import java.util.Optional;
+
 public class ConsoleUI {
     public static boolean isClient = false;
     public static boolean isHotelier = false;
-    private static AuthServiceImpl authService = new AuthServiceImpl(new InMemoryUserRepository());
+    public static User currentUser = null;  // track logged-in user
+
+    private static final AuthServiceImpl authService = new AuthServiceImpl(new InMemoryUserRepository());
+    public static final HotelService hotelService = new HotelServiceImpl(new InMemoryHotelRepository());
 
     public static void start() {
-
-            System.out.println("\n=== Welcome to Hotel Reservation App ===");
+        while (true) {
+            System.out.println("\n==== Welcome to Hotel Reservation App ====\n");
             System.out.println("1. Espace Client");
             System.out.println("2. Espace Hotelier");
             System.out.println("3. Exit");
@@ -25,13 +33,13 @@ public class ConsoleUI {
                     isClient = true;
                     isHotelier = false;
                     authSpace();
-                    break;
+                    return; // exit the loop after handling the choice
                 }
                 case 2 -> {
                     isHotelier = true;
                     isClient = false;
                     authSpace();
-                    break;
+                    return;
                 }
                 case 3 -> {
                     System.out.println("Goodbye!");
@@ -39,52 +47,57 @@ public class ConsoleUI {
                 }
                 default -> System.out.println("Invalid choice, try again.");
             }
-
+        }
     }
 
     public static void authSpace() {
-        System.out.println("\n=== Auth Menu ===");
-        System.out.println("1. Login");
-        System.out.println("2. Register");
-        System.out.println("3. <- Back");
-        int choice = ConsoleHelper.readInt("Choose an option");
-        switch (choice) {
-            case 1: 
-            String[] loginCredentials = LoginUI.login();
-            if (authService.login(loginCredentials[0], loginCredentials[1]).isPresent()) {
-                if (isClient) {
-                    System.out.println("Welcome to the Client Dashboard!");
-                } else {
-                    System.out.println("Welcome to the Hotelier Dashboard!");
-                }
-            } else {
-                System.out.println("Login failed. Please try again.");
-            }
-            break;
-            case 2: 
-            String[] registerCredentials = RegisterUI.register();
-            User.Role registerRole = isClient ? User.Role.CLIENT : User.Role.ADMIN;
-            if (authService.emailExists(registerCredentials[0], registerRole)){
-                System.out.println("Sorry this email already exists");
-            } else {
-                    try {
-                        authService.register(registerCredentials[0], registerCredentials[1], registerCredentials[2], registerRole);
-                        if (isClient) {
-                            System.out.println("Welcome to the Client Dashboard!");
+        while (true) {
+            System.out.println("\n====== Auth Menu ======\n");
+            System.out.println("1. Login");
+            System.out.println("2. Register");
+            System.out.println("3. <- Back");
+            int choice = ConsoleHelper.readInt("Choose an option");
+
+            switch (choice) {
+                case 1:
+                    String[] loginCredentials = LoginUI.login();
+                    Optional<User> loggedUser = authService.login(loginCredentials[0], loginCredentials[1]);
+
+                    if (loggedUser.isPresent()) {
+                        currentUser = loggedUser.get();
+                        if (isClient && currentUser.getRole() == User.Role.CLIENT) {
+                            System.out.println("Welcome " + currentUser.getName() + " to the Client Dashboard!");
+                            ClientSpace.clientSpace();
+                            return;
+                        } else if (isHotelier && currentUser.getRole() == User.Role.ADMIN) {
+                            System.out.println("Welcome " + currentUser.getName() + " to the Hotelier Dashboard!");
+                            HotelierSpace.hotelierSpace();
+                            return;
                         } else {
-                            System.out.println("Welcome to the Hotelier Dashboard!");
+                            System.out.println("Access denied.");
+                            currentUser = null;
                         }
-                    } catch (Exception e) {
-                        System.out.println("Registration failed: " + e.getMessage());
+                    } else {
+                        System.out.println("Login failed. Please try again.");
                     }
+                    break;
+                case 2:
+                    String[] registerCredentials = RegisterUI.register();
+                    User.Role registerRole = isClient ? User.Role.CLIENT : User.Role.ADMIN;
+                    if (authService.emailExists(registerCredentials[0], registerRole)) {
+                        System.out.println("Sorry this email already exists");
+                    } else {
+                        authService.register(registerCredentials[0], registerCredentials[1], registerCredentials[2], registerRole);
+                        System.out.println("Registration successful! Please login.");
+                    }
+                    break;
+                case 3: {
+                    ConsoleUI.start();
+                    return;
                 }
-            break;  
-            case 3: {
-                // go back to main menu
-                ConsoleUI.start();
-                break;
+                default:
+                    System.out.println("Invalid choice, try again.");
             }
-            default: System.out.println("Invalid choice, try again.");
         }
 
     }
