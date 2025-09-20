@@ -5,7 +5,7 @@ import Hotel.utils.Validator;
 
 public class LoginUI {
     	public static String[] login() {
-		System.out.println("Please enter your email and password:");
+		System.out.println("\nPlease enter your email and password:");
 		String email;
 		do {
 			email = ConsoleHelper.readLine("Email");
@@ -22,7 +22,6 @@ public class LoginUI {
 			}
 		} while (!Validator.isValidPassword(password));
 
-		String[] credentiels = new String[] { email, password };
-		return credentiels;
+            return new String[] { email, password };
 	}
 }

@@ -5,7 +5,7 @@ import Hotel.utils.Validator;
 
 public class RegisterUI {
 	public static String[] register() {
-		System.out.println("Please enter your credentials:");
+		System.out.println("\nPlease enter your credentials:");
 		String email;
 		do {
 			email = ConsoleHelper.readLine("Email");
@@ -30,7 +30,6 @@ public class RegisterUI {
 			}
 		} while (!Validator.isValidPassword(password));
 
-		String[] credentiels = new String[] { email, name, password };
-		return credentiels;
+        return new String[] {  email, name, password };
 	}
 }

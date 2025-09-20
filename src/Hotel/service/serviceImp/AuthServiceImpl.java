@@ -18,11 +18,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(String email, String name, String password, User.Role role){
-        if (ConsoleUI.isClient) {
-            role = User.Role.CLIENT;
-        }else{
-            role = User.Role.ADMIN;
-        }
         User user = new User(name, email, password, role);
         userRepo.save(user);
     }
@@ -31,14 +26,7 @@ public class AuthServiceImpl implements AuthService {
     public Optional<User> login(String email, String password){
         Optional<User> user = userRepo.findByEmail(email);
         if (user.isPresent() && user.get().getPassword().equals(password)) {
-            User.Role userRole = user.get().getRole();
-            if (ConsoleUI.isClient && userRole == User.Role.CLIENT) {
-                return user;
-            } else if (ConsoleUI.isHotelier && userRole == User.Role.ADMIN) {
-                return user;
-            } else {
-                return Optional.empty();
-            }
+            return user;
         }
         return Optional.empty();
     }
@@ -53,8 +41,7 @@ public class AuthServiceImpl implements AuthService {
     public boolean emailExists(String email, User.Role role){
         List<User> users = userRepo.findAll();
         for (User user : users){
-            // dont allow same email with same role
-            if (user.getEmail().equalsIgnoreCase(email) && user.getRole() == role) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
                 return true;
             }
         }
