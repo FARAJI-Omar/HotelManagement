@@ -4,28 +4,25 @@ import java.util.UUID;
 import java.time.Instant;
 
 public class Reservation {
-    private UUID id;
-    private int nights;
+    private UUID reservationId;
     private Instant timestamp;
-    private UUID clientId;
-    private UUID hotelId;
+    private String guestName;
+    private String hotelName;
+    private UUID guestId;
 
-    public Reservation(UUID hotelId, UUID clientId, int nights) {
-        this.id = UUID.randomUUID();
-        this.hotelId = hotelId;
-        this.clientId = clientId;
-        this.nights = nights;
+    public Reservation(String hotelName, String guestName, UUID guestId) {
+        this.guestId = guestId;
+        this.reservationId = UUID.randomUUID();
+        this.hotelName = hotelName;
+        this.guestName = guestName;
         this.timestamp = Instant.now();
     }
 
     // getters
-    public UUID getId() { return id; }
-    public UUID getHotelId() { return hotelId; }
-    public UUID getClientId() { return clientId; }
-    public int getNights() { return nights; }
+    public UUID getId() { return reservationId; }
+    public String getHotelName() { return hotelName; }
+    public UUID getGuestId() { return guestId; }
     public Instant getTimestamp() { return timestamp; }
-
-    // Setters
-    public void setNights(int nights) { this.nights = nights; }
+    public String getGuestName() { return guestName; }
 
 }

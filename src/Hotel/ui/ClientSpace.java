@@ -1,9 +1,13 @@
 package Hotel.ui;
 
+import Hotel.entity.Reservation;
 import Hotel.utils.ConsoleHelper;
+
+import java.util.UUID;
 
 public class ClientSpace {
     public static void clientSpace() {
+        UUID ownerId = ConsoleUI.currentUser.getId();
         while (true) {
             System.out.println("\n====== Client Space ======");
             System.out.println("1. Reserve Room");
@@ -17,8 +21,7 @@ public class ClientSpace {
 
             switch (choice) {
                 case 1 -> {
-                    System.out.println("Reserve Room!");
-                    return;
+                    ReserveHotelUI.reserveHotelUi();
                 }
                 case 2 -> {
                     System.out.println("Cancel Reservation!");

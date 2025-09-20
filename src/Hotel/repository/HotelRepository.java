@@ -17,6 +17,8 @@ public interface HotelRepository {
 
     List<Hotel> findAll(UUID ownerId);
 
+    List<Hotel> findAll();
+
     // UPDATE
     void update(String originalHotelName, String newHotelName, String newHotelAddress, int newTotalRooms);
     void updateAvailability(String hotelName, int availableRooms);

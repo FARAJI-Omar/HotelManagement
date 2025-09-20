@@ -4,8 +4,11 @@ import Hotel.service.AuthService;
 import Hotel.service.serviceImp.AuthServiceImpl;
 import Hotel.service.HotelService;
 import Hotel.service.serviceImp.HotelServiceImpl;
+import Hotel.service.ReservationService;
+import Hotel.service.serviceImp.ReservationServiceImpl;
 import Hotel.repository.repoImp.InMemoryHotelRepository;
 import Hotel.repository.repoImp.InMemoryUserRepository;
+import Hotel.repository.repoImp.InMemoryReservationRepository;
 import Hotel.entity.User;
 import Hotel.utils.*;
 
@@ -17,7 +20,9 @@ public class ConsoleUI {
     public static User currentUser = null;  // track logged-in user
 
     private static final AuthServiceImpl authService = new AuthServiceImpl(new InMemoryUserRepository());
-    public static final HotelService hotelService = new HotelServiceImpl(new InMemoryHotelRepository());
+    private static final InMemoryHotelRepository hotelRepository = new InMemoryHotelRepository(); // Shared instance
+    public static final HotelService hotelService = new HotelServiceImpl(hotelRepository);
+    public static final ReservationService reservationService = new ReservationServiceImpl(new InMemoryReservationRepository(), hotelRepository);
 
     public static void start() {
         while (true) {

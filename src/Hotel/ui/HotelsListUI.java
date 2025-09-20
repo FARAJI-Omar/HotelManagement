@@ -1,10 +1,8 @@
 package Hotel.ui;
 
-import Hotel.repository.HotelRepository;
-import Hotel.repository.repoImp.InMemoryHotelRepository;
 import Hotel.service.HotelService;
-import Hotel.service.serviceImp.HotelServiceImpl;
 import Hotel.entity.Hotel;
+import Hotel.entity.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,20 +15,29 @@ public class HotelsListUI {
     public static void displayHotels(String message) {
         System.out.println("\n===== " + message + " ======\n");
 
-        UUID ownerId = ConsoleUI.currentUser.getId();
+        List<Hotel> hotels;
 
-        List<Hotel> hotels = hotelService.findAllHotels(ownerId);
+        // If current user is a client, show all hotels. If hotelier, show only their hotels
+        if (ConsoleUI.currentUser.getRole() == User.Role.CLIENT) {
+            hotels = hotelService.findAllHotels();
+        } else {
+            UUID ownerId = ConsoleUI.currentUser.getId();
+            hotels = hotelService.findAllHotels(ownerId);
+        }
+
         if (hotels.isEmpty()) {
             System.out.println("No hotels found.");
         } else {
-            hotels.forEach(hotel -> {
-                System.out.println("Hotel Name: " + hotel.getHotelName());
-                System.out.println("Address: " + hotel.getAddress());
-                System.out.println("Available Rooms: " + hotel.getAvailableRooms());
-                System.out.println("Rating: " + hotel.getRating());
-                System.out.println("Total Rates: " + hotel.getTotalRates());
+            int counter = 1;
+            for (Hotel hotel : hotels) {
+                System.out.println(counter + ". Hotel Name: " + hotel.getHotelName());
+                System.out.println("   Address: " + hotel.getAddress());
+                System.out.println("   Available Rooms: " + hotel.getAvailableRooms());
+                System.out.println("   Rating: " + hotel.getRating());
+                System.out.println("   Total Rates: " + hotel.getTotalRates());
                 System.out.println("----------------------------------------\n");
-            });
+                counter++;
+            }
         }
     }
 

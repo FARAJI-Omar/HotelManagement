@@ -41,6 +41,12 @@ public class HotelServiceImpl implements HotelService {
     public List<Hotel> findAllHotels(UUID ownerId) {
         return hotelRepo.findAll(ownerId);
     }
+
+    //list all hotels for clients
+    @Override
+    public List<Hotel> findAllHotels() {
+        return hotelRepo.findAll();
+    }
     //delete hotel
     @Override
     public void delete(UUID ownerId, String hotelName) {

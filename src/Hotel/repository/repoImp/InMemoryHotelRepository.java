@@ -42,6 +42,11 @@ public class InMemoryHotelRepository implements HotelRepository {
         return ownerHotels;
     }
 
+    @Override
+    public List<Hotel> findAll() {
+        return new ArrayList<>(hotels.values());
+    }
+
     // UPDATE
     @Override
     public void update(String originalHotelName, String newHotelName, String newHotelAddress, int newTotalRooms) {

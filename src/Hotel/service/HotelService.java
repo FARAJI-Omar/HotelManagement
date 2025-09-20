@@ -15,6 +15,8 @@ public interface HotelService {
 
     List<Hotel> findAllHotels(UUID ownerId);
 
+    List<Hotel> findAllHotels();
+
 //    // UPDATE
     void update(UUID ownerId, String originalHotelName, String newHotelName, String newHotelAddress, int newTotalRooms);
 //
