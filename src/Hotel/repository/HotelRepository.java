@@ -8,25 +8,23 @@ import java.util.UUID;
 
 public interface HotelRepository {
     // CREATE
-    void save(String hotelName, String hotelAddress, int totalRooms);
+    void save(UUID hotelOwnerId, String hotelName, String hotelAddress, int totalRooms);
 
     // READ
     Optional<Hotel> findById(UUID hotelID);
 
-    Optional<Hotel> findByName(String hotelEmail);
+    Optional<Hotel> findByName(String hotelName);
 
-    List<Hotel> findAvailableHotels();
-
-    List<Hotel> findAll();
+    List<Hotel> findAll(UUID ownerId);
 
     // UPDATE
-    void update(Hotel hotel);
-    void updateAvailability(Hotel hotel, int availableRooms);
+    void update(String originalHotelName, String newHotelName, String newHotelAddress, int newTotalRooms);
+    void updateAvailability(String hotelName, int availableRooms);
 
     // DELETE
-    void delete(Hotel hotel);
+    void delete(String hotelName);
 
     // RATING
-    void rate(Hotel hotel, double newRating);
+    void rate(String hotelName, double newRating);
 
 }
