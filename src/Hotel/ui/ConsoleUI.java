@@ -27,8 +27,8 @@ public class ConsoleUI {
     public static void start() {
         while (true) {
             System.out.println("\n==== Welcome to Hotel Reservation App ====\n");
-            System.out.println("1. Espace Client");
-            System.out.println("2. Espace Hotelier");
+            System.out.println("1. Space Client");
+            System.out.println("2. Space Hotelier");
             System.out.println("3. Exit");
 
             int choice = ConsoleHelper.readInt("Choose an option");
