@@ -91,22 +91,8 @@ public class InMemoryHotelRepository implements HotelRepository {
     }
 
     // RATING
-    public void rate(String hotelName, double newRating) {
-        Optional<Hotel> existingHotel = findByName(hotelName);
-        if (existingHotel.isEmpty()) {
-            throw new IllegalArgumentException("Hotel with name '" + hotelName + "' not found");
-        } else {
-            Hotel hotel = existingHotel.get();
-            // Calculate new hotel rating
-            double currentRating = hotel.getRating();
-            int totalRates = hotel.getTotalRates();
-
-            double updatedRating = (currentRating * totalRates + newRating) / (totalRates + 1);
-            hotel.setRating(updatedRating);
-            hotel.setTotalRates(totalRates + 1);
-
-            hotels.put(hotel.getHotelId(), hotel);
-        }
+    @Override
+    public void updateRating(Hotel hotel) {
+        hotels.put(hotel.getHotelId(), hotel);
     }
-
 }

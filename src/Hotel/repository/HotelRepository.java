@@ -27,6 +27,5 @@ public interface HotelRepository {
     void delete(String hotelName);
 
     // RATING
-    void rate(String hotelName, double newRating);
-
+    void updateRating(Hotel hotel);
 }

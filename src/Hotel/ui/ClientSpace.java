@@ -1,6 +1,5 @@
 package Hotel.ui;
 
-import Hotel.entity.Reservation;
 import Hotel.service.ReservationService;
 import Hotel.utils.ConsoleHelper;
 
@@ -42,8 +41,7 @@ public class ClientSpace {
                     System.out.println("=====================================\n");
                 }
                 case 5 -> {
-                    System.out.println("Rate Hotel");
-                }
+                    RateHotelUI.rateHotelUI();                }
                 case 6 -> {
                     System.out.println("Update Profile!");
                 }

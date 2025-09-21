@@ -26,6 +26,11 @@ public class Validator {
         return totalRooms > 0;
     }
 
+    // rating must be between 1.0 and 5.0 stars
+    public static boolean isValidRating(double rating) {
+        return rating >= 1.0 && rating <= 5.0;
+    }
+
     // don't allow hotel duplicate names
     public static boolean hotelNotExists(UUID ownerId, String hotelName, HotelRepository hotelRepository) {
         List<Hotel> hotels = hotelRepository.findAll(ownerId);
